@@ -9,18 +9,21 @@ import sgMail from '@sendgrid/mail'
 
 // Import and configure dotenv
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config()
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json())
 
 // eslint-disable-next-line no-undef
-sgMail.setApiKey(process.env.SENDGRID_API_KEY); // Replace with your SendGrid API key
-// eslint-disable-next-line no-undef
-console.log(process.env.SENDGRID_API_KEY)
+const sendGridApiKey = process.env.VITE_SENDGRID_API_KEY
+
+// Set sgMail with API key
+sgMail.setApiKey(sendGridApiKey); 
+
+
 
 // Function to send email with only JSON data
 const sendEmailWithJsonData = async (recipientEmail, jsonData) => {
@@ -34,7 +37,7 @@ const sendEmailWithJsonData = async (recipientEmail, jsonData) => {
       text: JSON.stringify(jsonData, null, 2),
     };
 
-    await sgMail.send(msg);
+    await sgMail.send(msg)
 
     console.log('Email with JSON data sent successfully!');
   } catch (error) {
