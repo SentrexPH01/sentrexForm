@@ -65,47 +65,23 @@ const dataUrlToBuffer = (dataUrl) => {
 const currentDate = new Date()
 console.log(currentDate);
 
-// Function to add an image to a specific location on the last page of a PDF
-const addImageToPDF = async (pdfPath, imageDataUrl, outputPdfPath, iAm) => {
+
+let globalIAm = '';
+
+app.post('/send-iam-data', async (req, res) => {
   try {
-    const pdfBytes = await fs.readFile(pdfPath);
-    const pdfDoc = await PDFDocument.load(pdfBytes);
+    globalIAm = req.body.iAm; // Store iAm globally
 
-    // Get the last page of the PDF
-    const lastPage = pdfDoc.getPages()[pdfDoc.getPages().length - 1];
+  
+    console.log('Received data from frontend:', globalIAm);
 
-    const { width, height } = lastPage.getSize();
-
-    const { buffer, mimeType } = dataUrlToBuffer(imageDataUrl);
-    const image = await pdfDoc.embedPng(buffer);
-
-    // Set the desired width and height for the image
-    const desiredWidth = 490;
-    const desiredHeight = 130;
-
-    // Conditionally set x and y based on the value of iAm
-    let x, y;
-
-    if (iAm === 'theHCP') {
-      // Set coordinates for 'theHCP'
-      x = 100; // Adjust as needed
-      y = 500; // Adjust as needed
-    } else {
-      // Set default coordinates for other cases
-      x = 55; // Adjust as needed
-      y = 465; // Adjust as needed
-    }
-
-    console.log(`iAm: ${iAm}, x: ${x}, y: ${y}`); // Debugging statement
-
-    lastPage.drawImage(image, { x, y, width: desiredWidth, height: desiredHeight });
-
-    const modifiedPdfBytes = await pdfDoc.save();
-    await fs.writeFile(outputPdfPath, modifiedPdfBytes);
+    res.json({ message: 'Data received successfully!' });
   } catch (error) {
-    console.error('Error in addImageToPDF:', error);
+    console.error('Error processing send-iam-data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-};
+})
+
 
 app.post('/generate-pdf', async (req, res) => {
   try {
@@ -137,6 +113,7 @@ app.post('/generate-pdf', async (req, res) => {
     } = req.body;
 
 
+  
     // Call the function to send an email with JSON data to paulh@sentrex.com
     await sendEmailWithJsonData('paulh@sentrex.com', {
       firstName,
@@ -336,6 +313,54 @@ const sendEmailWithAttachment = async (recipientEmail, attachmentBytes) => {
     throw new Error('Error sending email');
   }
 };
+
+
+
+
+// Function to add an image to a specific location on the last page of a PDF
+const addImageToPDF = async (pdfPath, imageDataUrl, outputPdfPath) => {
+  try {
+    const pdfBytes = await fs.readFile(pdfPath);
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+
+    // Get the last page of the PDF
+    const lastPage = pdfDoc.getPages()[pdfDoc.getPages().length - 1];
+
+    const { width, height } = lastPage.getSize();
+
+    const { buffer, mimeType } = dataUrlToBuffer(imageDataUrl);
+    const image = await pdfDoc.embedPng(buffer);
+
+    // Set the desired width and height for the image
+    const desiredWidth = 490;
+    const desiredHeight = 130;
+
+    // Conditionally set x and y based on the value of iAm
+    let x, y;
+
+    console.log(globalIAm)
+
+    if (globalIAm === 'HCP') {
+      // Set coordinates for 'theHCP'
+      x = 55; // Adjust as needed
+      y = 365; // Adjust as needed
+    } else {
+      // Set default coordinates for other cases
+      x = 55; // Adjust as needed
+      y = 465; // Adjust as needed
+    }
+
+    console.log(`iAm: ${globalIAm}, x: ${x}, y: ${y}`); // Debugging statement
+
+    lastPage.drawImage(image, { x, y, width: desiredWidth, height: desiredHeight });
+
+    const modifiedPdfBytes = await pdfDoc.save();
+    await fs.writeFile(outputPdfPath, modifiedPdfBytes);
+  } catch (error) {
+    console.error('Error in addImageToPDF:', error);
+  }
+};
+
 
 
 app.listen(port, () => {

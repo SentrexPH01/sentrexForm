@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
+
 import { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { ChakraProvider, HStack } from "@chakra-ui/react";
@@ -27,7 +27,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-
+  
   ModalBody,
   ModalCloseButton,
   Radio,
@@ -156,6 +156,30 @@ const YourComponent = () => {
     setPhoneNumber(e.target.value);
   };
 
+  const sendDataToBackend = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/send-iam-data", {
+        method: "POST", // Adjust the method based on your backend requirements
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ iAm }),
+      });
+
+      if (response.ok) {
+        console.log("Data sent successfully!", iAm);
+        // Handle success if needed
+      } else {
+        console.error("Failed to send data to the backend");
+        // Handle error if needed
+      }
+    } catch (error) {
+      console.error("Error sending data to the backend:", error);
+      // Handle error if needed
+    }
+  };
+
+
   // MAIN CODE
   const handleSaveAndGeneratePDF = async () => {
      
@@ -202,6 +226,7 @@ console.log("acknowledgedcheckbox:", acknowledgedcheckbox);
 console.log("dateOfSignature:", dateOfSignature);
 console.log("signatureDataUrl:", signatureDataUrl);
 
+    
 
 
       // Log and send the input data to the server
@@ -302,6 +327,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
       </Center>
       {/* <Button onClick={handleCaptureScreenshot}>Capture Screenshot</Button> */}
       
+      <Formik> 
       <FormControl 
         isRequired
         
@@ -379,6 +405,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
           </HStack>
         </Flex>
       </FormControl>
+      </Formik>
       <Flex mt="5">
         <Box flex="1">
           <FormLabel fontSize="sm">Best Time to Call:</FormLabel>
@@ -534,7 +561,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
       <Input
         id="email"
         value={email}
-        
+        placeholder="(Optional)"
         onChange={(e) => setEmail(e.target.value)}
       />
 
@@ -749,24 +776,25 @@ console.log("signatureDataUrl:", signatureDataUrl);
             setIam(e.target.value);
             handleShowHide(e);
             }}
-            onClick={() =>
-              endOfForm.current?.scrollIntoView({ behavior: "smooth" })
-            }
+            onClick={() => {
+              sendDataToBackend();
+              endOfForm.current?.scrollIntoView({ behavior: "smooth" });
+            }}
           >
-            <option value="thePatient">The patient</option>
-            <option value="theSDM">
+            <option value="Patient">The patient</option>
+            <option value="SDM">
               The patient’s Substitute Decision Maker (SDM)
             </option>
-            <option value="theHCP">
+            <option value="HCP">
               An HCP obtaining verbal consent on behalf of the patient
             </option>
           </Select>
         </Box>
       </HStack>
       {/* IF PATIENT is SELECTED */}
-      {showHide === "thePatient" && (
+      {showHide === "Patient" && (
         <Fade
-          in={showHide === "thePatient"}
+          in={showHide === "Patient"}
           animateOpacity
           transition={{ enter: { duration: 1 } }}
         >
@@ -833,7 +861,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
           The form has successfully been submitted! Submit another form?
             <Box>
             <Center>
-            <ButtonGroup mt={4} spacing={4}>
+            <ButtonGroup mt={6} spacing={4}>
               <Button colorScheme="teal" onClick={handleRefresh}>
                 Yes
               </Button>
@@ -853,9 +881,9 @@ console.log("signatureDataUrl:", signatureDataUrl);
         
       )}
       {/* IF SDM is SELECTED */}
-      {showHide === "theSDM" && (
+      {showHide === "SDM" && (
         <Fade
-          in={showHide === "theSDM"}
+          in={showHide === "SDM"}
           animateOpacity
           transition={{ enter: { duration: 1 } }}
         >
@@ -869,7 +897,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
           </Text>
 
           <FormLabel fontSize="md" mt="5">
-            Signature of Patient's Substitute Maker (SDM):
+            Signature of Patient&apos;s Substitute Maker (SDM):
           </FormLabel>
           <Box className="border rounded-xl">
             <SignatureCanvas
@@ -910,7 +938,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
               <HStack spacing={4} width="100%">
                 <Box flex="1">
                   <FormLabel fontSize="sm">
-                    Printed Name of Patient's SDM:
+                    Printed Name of Patient&apos;s SDM:
                   </FormLabel>
                   <Input
                     id="nameOfSdmPrinted"
@@ -969,9 +997,9 @@ console.log("signatureDataUrl:", signatureDataUrl);
       )}
 
       {/* IF HCP is SELECTED */}
-      {showHide === "theHCP" && (
+      {showHide === "HCP" && (
         <Fade
-          in={showHide === "theHCP"}
+          in={showHide === "HCP"}
           animateOpacity
           transition={{ enter: { duration: 1 } }}
         >
