@@ -22,7 +22,7 @@ console.log(process.env.SENDGRID_API_KEY)
 // Function to send email with only JSON data
 const sendEmailWithJsonData = async (recipientEmail, jsonData) => {
   try {
-    const senderEmail = 'itautomation@sentrex.com'; // Replace with your sender email
+    const senderEmail = 'itautomation@sentrex.com';
 
     const msg = {
       to: recipientEmail,
@@ -36,6 +36,11 @@ const sendEmailWithJsonData = async (recipientEmail, jsonData) => {
     console.log('Email with JSON data sent successfully!');
   } catch (error) {
     console.error('Error sending email with JSON data:', error);
+
+    // Log additional details about the error
+    console.error('SendGrid response:', error.response);
+    console.error('SendGrid request payload:', error.request);
+
     throw new Error('Error sending email with JSON data');
   }
 };
