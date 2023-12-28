@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import express from 'express';
 import puppeteer from 'puppeteer';
 import cors from 'cors';
 import { PDFDocument } from 'pdf-lib';
 import fs from 'fs/promises';
 import sgMail from '@sendgrid/mail'
-import axios from 'axios'
+
 
 // Import and configure dotenv
 import dotenv from 'dotenv';
@@ -16,7 +17,9 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 
+// eslint-disable-next-line no-undef
 sgMail.setApiKey(process.env.SENDGRID_API_KEY); // Replace with your SendGrid API key
+// eslint-disable-next-line no-undef
 console.log(process.env.SENDGRID_API_KEY)
 
 // Function to send email with only JSON data
@@ -50,6 +53,7 @@ const sendEmailWithJsonData = async (recipientEmail, jsonData) => {
 const dataUrlToBuffer = (dataUrl) => {
   const base64 = dataUrl.split(',')[1];
   return {
+    // eslint-disable-next-line no-undef
     buffer: Buffer.from(base64, 'base64'),
     mimeType: dataUrl.split(';')[0].split(':')[1],
   };

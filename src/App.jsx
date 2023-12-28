@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { ChakraProvider, HStack } from "@chakra-ui/react";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import textTermsAndConditions from "./TextContent.js"
 import InputMask from "react-input-mask";
 import { AddressAutofill } from '@mapbox/search-js-react';
@@ -19,15 +20,14 @@ import {
   Fade,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
+  // FormErrorMessage,
   Image,
   Input,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
+
   ModalBody,
   ModalCloseButton,
   Radio,
@@ -40,38 +40,36 @@ import {
 
 const YourComponent = () => {
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  }
-
-  const validationSchema = Yup.object().shape({
-    address: Yup.string().required("Address is required"),
-    city: Yup.string().required("City is required"),
-    dateOfBirth: Yup.date().required("Date of Birth is required"), 
-    firstName: Yup.string().required("First Name is required"),
-    lastName: Yup.string().required("Last Name is required"),
-    phoneNumber: Yup.string().required("Phone Number is required"),
-    postalCode: Yup.string().required("Postal Code is required"),
-    province: Yup.string().required("Province is required"),
-    publicHealthCardNumber: Yup.string().required("Public Health Card Number is required"),
-    consentAcknowledge: Yup.array().required("Consent acknowledge is required"),
-    // signature: Yup.string().required("Signature is required"),
-  });
   
-  const initialValues = {
-    address: "",
-    city: "",
-    dateOfBirth: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    postalCode:"",
-    province: "",
-    publicHealthCardNumber: "",
-    signature: "",
-    consentAcknowledge: "",
-  };
+
+  // const validationSchema = Yup.object().shape({
+  //   address: Yup.string().required("Address is required"),
+  //   city: Yup.string().required("City is required"),
+  //   dateOfBirth: Yup.date().required("Date of Birth is required"), 
+  //   firstName: Yup.string().required("First Name is required"),
+  //   lastName: Yup.string().required("Last Name is required"),
+  //   phoneNumber: Yup.string().required("Phone Number is required"),
+  //   postalCode: Yup.string().required("Postal Code is required"),
+  //   province: Yup.string().required("Province is required"),
+  //   publicHealthCardNumber: Yup.string().required("Public Health Card Number is required"),
+  //   consentAcknowledge: Yup.array().required("Consent acknowledge is required"),
+  //   // signature: Yup.string().required("Signature is required"),
+  // });
+  
+  // const initialValues = {
+  //   address: "",
+  //   city: "",
+  //   dateOfBirth: "",
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   phoneNumber: "",
+  //   postalCode:"",
+  //   province: "",
+  //   publicHealthCardNumber: "",
+  //   signature: "",
+  //   consentAcknowledge: "",
+  // };
 
   const endOfForm = useRef(null);
   const sigCanvas = useRef(null);
@@ -912,7 +910,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
               <HStack spacing={4} width="100%">
                 <Box flex="1">
                   <FormLabel fontSize="sm">
-                    Printed Name of Patient’s SDM:
+                    Printed Name of Patient's SDM:
                   </FormLabel>
                   <Input
                     id="nameOfSdmPrinted"
