@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { ChakraProvider, HStack } from "@chakra-ui/react";
 import * as Yup from "yup";
-import textTermsAndConditions from "./textContent";
+import textTermsAndConditions from "./TextContent.js"
 import InputMask from "react-input-mask";
 import { AddressAutofill } from '@mapbox/search-js-react';
 import { Formik, Form, Field, ErrorMessage } from "formik";
