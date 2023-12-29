@@ -77,6 +77,7 @@ const YourComponent = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [healthCardNumber, setHealthCardNumber] = useState("");
+  const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
   const [doctor, setDoctor] = useState("");
   const [medication, setMedication] = useState("");
@@ -102,6 +103,7 @@ const YourComponent = () => {
   const [acknowledgedcheckbox, setAcknowledgedcheckbox] = useState("")
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [vcbFrom, setVcbFrom] = useState("");
 
   const [showHide, setShowHide] = useState("");
 
@@ -112,15 +114,13 @@ const YourComponent = () => {
 
   const handleRadioChange = (value) => {
     setLeaveAVoiceMail(value);
-    // You can choose to call another function here if needed
-    // sendDataToBackend();
+    
   };
 
-  const handleDoctorChange = (value) => {
-    setDoctor(value);
-    // You can choose to call another function here if needed
-    // sendDataToBackend();
-  };
+  const handleVcbFrom = (value) => {
+    setVcbFrom(value);
+  }
+
 
 
   const handleCheckboxChange2 = (value) => {
@@ -163,7 +163,7 @@ const YourComponent = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ iAm }),
+        body: JSON.stringify({ iAm, doctor }),
       });
 
       if (response.ok) {
@@ -226,7 +226,7 @@ console.log("acknowledgedcheckbox:", acknowledgedcheckbox);
 console.log("dateOfSignature:", dateOfSignature);
 console.log("signatureDataUrl:", signatureDataUrl);
 
-    
+
 
 
       // Log and send the input data to the server
@@ -256,8 +256,12 @@ console.log("signatureDataUrl:", signatureDataUrl);
           insurerCertificate,
           iAm,
           acknowledgedcheckbox,
-          dateOfSignature,
+          
           signatureDataUrl,
+          vcbFrom,
+          nameOfSdmPrinted,
+          relationshipOfSdmToPatient,
+          vcbNameOfHcp,
           
         }),
       });
@@ -357,7 +361,8 @@ console.log("signatureDataUrl:", signatureDataUrl);
             </Box>
           </HStack>
         </Flex>
-        
+        <Flex>
+        <HStack spacing={4} width="100%" mt="5">
         <Box flex="1">
               <FormLabel fontSize="sm" >
                 Care Card Number
@@ -367,7 +372,21 @@ console.log("signatureDataUrl:", signatureDataUrl);
                 value={healthCardNumber}
                 onChange={(e) => setHealthCardNumber(e.target.value)}
               />
+              
             </Box>
+            <Box flex="1">
+              <FormLabel fontSize="sm" >
+                Gender
+              </FormLabel>
+              <Input
+                id="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              />
+              
+            </Box>
+            </HStack>
+            </Flex>
         <Flex>
           <HStack spacing={4} width="100%" mt="5">
             <Formik>
@@ -555,7 +574,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
       </FormControl>
 
       
-      <FormLabel fontSize="sm" mt="5">
+      <FormLabel fontSize="sm" mt="5" >
         Email address:
       </FormLabel>
       <Input
@@ -565,7 +584,48 @@ console.log("signatureDataUrl:", signatureDataUrl);
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <FormLabel fontSize="sm" mt="5" className="page-break">
+<HStack space="5" mt="5" className="page-break">
+        <Center>
+          <Box>
+            <Text as="b" fontSize="sm">
+              Please select Physician:
+            </Text>
+          </Box>
+        </Center>
+        <Box flex="1">
+          <Select
+            fontSize="md"
+            variant="filled"
+            id="doctor"
+            value={doctor}
+            placeholder="Select option"
+            onChange={(e) => {
+            setDoctor(e.target.value);
+            }}
+           
+          >
+            <option value="Dr. Robert Carruthers (ID# 39947)">
+              Dr. Robert Carruthers (ID# 39947)
+              </option>
+            <option value="Dr. Virginia Devonshire (ID# 13005)">
+              Dr. Virginia Devonshire (ID# 13005)
+            </option>
+            <option value="Dr. Ana-luiza Sayao (ID# 24217)">
+            Dr. Ana-luiza Sayao (ID# 24217)
+            </option>
+            <option value="Dr. Alice Schabas (ID# 32711)">
+            Dr. Alice Schabas (ID# 32711)
+            </option>
+            <option value="Dr. Anthony Traboulsee (ID# 18049)">
+            Dr. Anthony Traboulsee (ID# 18049)
+            </option>
+          </Select>
+        </Box>
+      </HStack>
+
+
+
+      {/* <FormLabel fontSize="sm" mt="5" className="page-break">
       Physician Name:
       </FormLabel>
       <Box>
@@ -601,7 +661,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
         
       </RadioGroup>
     
-      </Box>
+      </Box> */}
 
       <FormLabel fontSize="sm" mt="5">
         Select Medication:
@@ -715,18 +775,25 @@ console.log("signatureDataUrl:", signatureDataUrl);
      
       
       <Form>
-      
+      <FormControl isRequired>
+      <div className="flex flex-row items-center  my-3">
+      <div className=" mr-3 mt-1">
       <input
           type="checkbox"
           id="acknowledgedcheckbox"
           name="acknowledgedcheckbox"
           checked={acknowledgedcheckbox}
           onChange={handleCheckboxChange}
-          className=" accent-green-600 mr-3 my-3"
+          className=" accent-green-600 h-4 w-5"
+          required
           
         />
+        </div>
+        <div className="">
        <label>I acknowledge, understand, and agree to the above.</label>
-       
+       </div>
+       </div>
+       </FormControl>
       </Form>
       
       </Formik>
@@ -1012,19 +1079,34 @@ console.log("signatureDataUrl:", signatureDataUrl);
             Information as outlined in this form.
           </Text>
           <Flex mt="5">
-            <FormLabel>
-            Verbal Consent Obtained From:
-            </FormLabel>
-            <RadioGroup id="verbalConsentObtained" onChange={setVerbalConsentObtained} value={verbalConsentObtained} colorScheme="green">
-          <Stack direction="row">
-              <Radio value="Patient">
-              Patient
-              </Radio>
-              <Radio value="PatientSdm">
-              Patient’s Substitute Decision Maker
-              </Radio>
-              </Stack>
-            </RadioGroup>
+          <Box flex="1">
+          <FormLabel fontSize="sm">Verbal Consent Obtained By:</FormLabel>
+          <RadioGroup onChange={handleVcbFrom} value={vcbFrom} id="vbcFrom">
+      <Stack spacing={3} direction="row">
+        <input
+          type="radio"
+          id="dummyID"
+          value="Patient"
+          name="vcbFrom"
+          className="accent-green-600"
+          onChange={() => handleVcbFrom('Patient')}
+        />
+        <label htmlFor="Patient">Patient</label>
+
+        <input
+          type="radio"
+          id="dummyID2"
+          value="Patient&apos;s Subsitute Decision Maker"
+          name="vcbFrom"
+          className="accent-green-600"
+          onChange={() => handleVcbFrom('Patient&apos;s Subsitute Decision Maker')}
+        />
+        <label htmlFor="Patient's Subsitute Decision Maker">Patient&apos;s Subsitute Decision Maker</label>
+      </Stack>
+    </RadioGroup>
+        </Box>
+            
+            
           </Flex>
 
           <FormLabel fontSize="sm" mt="5">

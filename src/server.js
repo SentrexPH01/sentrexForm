@@ -68,19 +68,37 @@ console.log(currentDate);
 
 let globalIAm = '';
 
-app.post('/send-iam-data', async (req, res) => {
-  try {
-    globalIAm = req.body.iAm; // Store iAm globally
+let globalDoctor = '';
+
+// app.post('/send-iam-data', async (req, res) => {
+//   try {
+//     globalIAm = req.body.iAm; // Store iAm globally
 
   
-    console.log('Received data from frontend:', globalIAm);
+//     console.log('Received data from frontend:', globalIAm);
+
+//     res.json({ message: 'Data received successfully!' });
+//   } catch (error) {
+//     console.error('Error processing send-iam-data:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// })
+
+app.post('/send-iam-data', async (req, res) => {
+  try {
+    const { iAm, doctor } = req.body; // Extract iAm and doctor from the request body
+    globalIAm = iAm; // Store iAm globally
+    globalDoctor = doctor; // Store doctor globally
+
+    console.log('Received data from frontend:', globalIAm, globalDoctor);
 
     res.json({ message: 'Data received successfully!' });
   } catch (error) {
     console.error('Error processing send-iam-data:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-})
+});
+
 
 
 app.post('/generate-pdf', async (req, res) => {
@@ -107,8 +125,13 @@ app.post('/generate-pdf', async (req, res) => {
           dateOfBirth,
           phoneNumber,
           acknowledgedcheckbox,
-          dateOfSignature,
-          signatureDataUrl
+          // dateOfSignature,
+          
+          signatureDataUrl,
+          vcbFrom,
+          nameOfSdmPrinted,
+          relationshipOfSdmToPatient,
+          vcbNameOfHcp,
 
     } = req.body;
 
@@ -136,8 +159,13 @@ app.post('/generate-pdf', async (req, res) => {
       dateOfBirth,
       phoneNumber,
       acknowledgedcheckbox,
-      dateOfSignature,
+      // dateOfSignature,
+      
       currentDate,
+      vcbFrom,
+      nameOfSdmPrinted,
+      relationshipOfSdmToPatient,
+      vcbNameOfHcp,
     });
 
     console.log('Received data on server:', { 
@@ -162,9 +190,13 @@ app.post('/generate-pdf', async (req, res) => {
           insurerCertificate,
           iAm,
           acknowledgedcheckbox,
-          dateOfSignature,
-          signatureDataUrl,
+          // dateOfSignature,
+          
           currentDate,
+          vcbFrom,
+          nameOfSdmPrinted,
+          relationshipOfSdmToPatient,
+          vcbNameOfHcp,
     
     });
 
@@ -221,8 +253,9 @@ app.post('/generate-pdf', async (req, res) => {
     let radioButton = await page.waitForXPath(`//input[@id='${leaveAVoiceMail}']`)
     await radioButton.click();
 
-    let doctorRadioButton = await page.waitForXPath(`//input[@id='${doctor}']`)
-    await doctorRadioButton.click();
+   
+
+    await page.select('#doctor', doctor)
 
     let medicationRadioButton = await page.waitForXPath(`//input[@id='${medication}']`)
     await medicationRadioButton.click();
@@ -232,18 +265,34 @@ app.post('/generate-pdf', async (req, res) => {
     //   await radio.click();
     // }
 
-    await page.click("#leaveAVoiceMail", {clickCount: 1});
+    // await page.click("#leaveAVoiceMail", {clickCount: 1});
 
 
     // Clicks the Acknowledged Checkbox
     await page.click('#acknowledgedcheckbox', {clickCount: 1});
     await page.select('#iAm', iAm)
+    // Wait for 1 seconds
+    await page.waitForTimeout(2000);
 
-
-  
-
-    // Wait for 5 seconds
-    await page.waitForTimeout(500);
+    if (iAm === "HCP" || iAm === "SDM") {
+      // Execute these lines only if iAm is "HCP" or "SDM"
+      await page.type('#nameOfSdmPrinted', nameOfSdmPrinted);
+      await page.type('#relationshipOfSdmToPatient', relationshipOfSdmToPatient);
+    }
+    
+    if (iAm === "HCP" && vcbFrom === "Patient") {
+      await page.type('#vcbNameOfHcp', vcbNameOfHcp);
+      await page.click('#dummyID');
+    }
+    
+    if (iAm === "HCP" && vcbFrom === "Patient&apos;s Subsitute Decision Maker") {
+      await page.type('#vcbNameOfHcp', vcbNameOfHcp);
+      await page.click('#dummyID2');
+    }
+    
+    // await page.type('#dateOfSignature', dateOfSignature);
+    
+ 
 
   // Generates a PDF from the page content with margins
   const pdfPath = 'patient-form-test.pdf';
@@ -282,6 +331,7 @@ app.post('/generate-pdf', async (req, res) => {
    console.error('Error generating PDF:', error);
    res.status(500).json({ success: false, error: error.message });
  }
+
 });
 
 
@@ -343,7 +393,7 @@ const addImageToPDF = async (pdfPath, imageDataUrl, outputPdfPath) => {
     if (globalIAm === 'HCP') {
       // Set coordinates for 'theHCP'
       x = 55; // Adjust as needed
-      y = 365; // Adjust as needed
+      y = 350; // Adjust as needed
     } else {
       // Set default coordinates for other cases
       x = 55; // Adjust as needed
