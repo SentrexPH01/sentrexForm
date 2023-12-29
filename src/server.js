@@ -204,8 +204,11 @@ app.post('/generate-pdf', async (req, res) => {
     const browser = await puppeteer.launch({ headless: 'new' });
     const page = await browser.newPage();
 
-    // Navigates to the project README file
-    await page.goto('http://localhost:5173/');
+    // Navigates to the project in DEV
+    // await page.goto('http://localhost:5173/');
+
+    // Navigfate to the AWS Amplify Project
+    await page.goto('https://main.d3csn0gbow9q15.amplifyapp.com/')
 
     
      // Wait for form
