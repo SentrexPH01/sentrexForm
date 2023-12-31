@@ -158,7 +158,7 @@ const YourComponent = () => {
 
   const sendDataToBackend = async () => {
     try {
-      const response = await fetch("https://main.d3csn0gbow9q15.amplifyapp.com/send-iam-data", {
+      const response = await fetch("/send-iam-data", {
         method: "POST", // Adjust the method based on your backend requirements
         headers: {
           "Content-Type": "application/json",
@@ -230,7 +230,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
 
 
       // Log and send the input data to the server
-      const response = await fetch("https://main.d3csn0gbow9q15.amplifyapp.com/generate-pdf", {
+      const response = await fetch("http://localhost:3001/generate-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

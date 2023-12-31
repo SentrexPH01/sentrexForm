@@ -275,7 +275,7 @@ app.post('/generate-pdf', async (req, res) => {
     await page.click('#acknowledgedcheckbox', {clickCount: 1});
     await page.select('#iAm', iAm)
     // Wait for 1 seconds
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(500);
 
     if (iAm === "HCP" || iAm === "SDM") {
       // Execute these lines only if iAm is "HCP" or "SDM"
@@ -297,141 +297,123 @@ app.post('/generate-pdf', async (req, res) => {
     
  
 
-  // // Generates a PDF from the page content with margins and saves it locally
-  // const pdfPath = 'patient-form-test.pdf';
-  // await page.pdf({
-  //   path: pdfPath,
-  //   format: 'letter',
-  //   margin: {
-  //     top: '15px',
-  //     bottom: 0,
-  //     left: '15px',
-  //     right: '15px',
-  //   },
-  // });
-
-
-     // Generates a PDF from the page content with margins
-     const pdfBuffer = await page.pdf({
-      format: 'letter',
-      margin: {
-        top: '15px',
-        bottom: 0,
-        left: '15px',
-        right: '15px',
-      },
-    });
-
-
-    // Add an image (signature) to the bottom of the generated PDF and send it as an email attachment
+   // Generates a PDF from the page content with margins
+   const pdfPath = 'patient-form-test.pdf';
+   await page.pdf({
+     path: pdfPath,
+     format: 'letter',
+     margin: {
+       top: '15px',
+       bottom: 0,
+       left: '15px',
+       right: '15px',
+     },
+   });
+ 
+     
+ 
+    // Add an image (signature) to the bottom of the generated PDF
     const imageDataUrl = req.body.signatureDataUrl;
-    await addImageToPDF(pdfBuffer, imageDataUrl, req.body.email);    
-
-  //  // Add an image (signature) to the bottom of the generated PDF
-  //  const imageDataUrl = req.body.signatureDataUrl;
-  //  const outputPdfPath = 'patient-form-final.pdf';
-  //  await addImageToPDF(pdfPath, imageDataUrl, outputPdfPath);
-
-  //  // Cleanup: Delete the original PDF without the image
-  //  await fs.unlink(pdfPath)
-
-  //  // Send email with the generated PDF as an attachment
-  //  const pdfBytes = await fs.readFile(outputPdfPath);
-
-  //  await sendEmailWithAttachment(req.body.email, pdfBytes);
-
-   await browser.close();
-
-
-
-  // Send a success response
-  res.json({ success: true });
-  console.log('PDF generated and emailed successfully!');
-} catch (error) {
-  console.error('Error generating PDF:', error);
-  res.status(500).json({ success: false, error: error.message });
-}
-});
-
-
-// Function to send email with attachment using SendGrid
-const sendEmailWithAttachment = async (recipientEmail, attachmentBytes) => {
-  try {
-    const senderEmail = 'itautomation@sentrex.com'; // Replace with your sender email
-
-    const msg = {
-      to: '87hendricks@gmail.com',
-      from: senderEmail,
-      subject: 'VHC Form',
-      text: 'Please see the attachment',
-      attachments: [
-        {
-          content: attachmentBytes.toString('base64'),
-          filename: 'patient-form.pdf',
-          type: 'application/pdf',
-          disposition: 'attachment',
-        },
-      ],
-    };
-
-    await sgMail.send(msg);
-
-    console.log('Email sent successfully!');
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw new Error('Error sending email');
-  }
-};
-
-
-
-
-// Function to add an image to a specific location on the last page of a PDF
-const addImageToPDF = async (pdfBuffer, imageDataUrl, recipientEmail) => {
-
-  try {
-    const pdfDoc = await PDFDocument.load(pdfBuffer);
-
-
-    // Get the last page of the PDF
-    const lastPage = pdfDoc.getPages()[pdfDoc.getPages().length - 1];
-
-    const { width, height } = lastPage.getSize();
-
-    const { buffer, mimeType } = dataUrlToBuffer(imageDataUrl);
-    const image = await pdfDoc.embedPng(buffer);
-
-    // Set the desired width and height for the image
-    const desiredWidth = 490;
-    const desiredHeight = 130;
-
-    // Conditionally set x and y based on the value of iAm
-    let x, y;
-
-    console.log(globalIAm)
-
-    if (globalIAm === 'HCP') {
-      // Set coordinates for 'theHCP'
-      x = 55; // Adjust as needed
-      y = 350; // Adjust as needed
-    } else {
-      // Set default coordinates for other cases
-      x = 55; // Adjust as needed
-      y = 465; // Adjust as needed
-    }
-
-    console.log(`iAm: ${globalIAm}, x: ${x}, y: ${y}`); // Debugging statement
-
-    lastPage.drawImage(image, { x, y, width: desiredWidth, height: desiredHeight });
-
-    const modifiedPdfBytes = await pdfDoc.save();
-
+    const outputPdfPath = 'patient-form-final.pdf';
+    await addImageToPDF(pdfPath, imageDataUrl, outputPdfPath);
+ 
+    // Cleanup: Delete the original PDF without the image
+    await fs.unlink(pdfPath)
+ 
     // Send email with the generated PDF as an attachment
-    await sendEmailWithAttachment(recipientEmail, modifiedPdfBytes);
+    const pdfBytes = await fs.readFile(outputPdfPath);
+    await sendEmailWithAttachment(req.body.email, pdfBytes);
+ 
+    await browser.close();
+ 
+ 
+ 
+    res.json({ success: true, pdfPath: outputPdfPath });
+    console.log('PDF generated and emailed successfully!');
   } catch (error) {
-    console.error('Error in addImageToPDF:', error);
+    console.error('Error generating PDF:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
-};
+ 
+ });
+ 
+ 
+ // Function to send email with attachment using SendGrid
+ const sendEmailWithAttachment = async (recipientEmail, attachmentBytes) => {
+   try {
+     const senderEmail = 'itautomation@sentrex.com'; // Replace with your sender email
+ 
+     const msg = {
+       to: '87hendricks@gmail.com',
+       from: senderEmail,
+       subject: 'VHC Form',
+       text: 'Please see the attachment',
+       attachments: [
+         {
+           content: attachmentBytes.toString('base64'),
+           filename: 'patient-form.pdf',
+           type: 'application/pdf',
+           disposition: 'attachment',
+         },
+       ],
+     };
+ 
+     await sgMail.send(msg);
+ 
+     console.log('Email sent successfully!');
+   } catch (error) {
+     console.error('Error sending email:', error);
+     throw new Error('Error sending email');
+   }
+ };
+ 
+ 
+ 
+ 
+ // Function to add an image to a specific location on the last page of a PDF
+ const addImageToPDF = async (pdfPath, imageDataUrl, outputPdfPath) => {
+   try {
+     const pdfBytes = await fs.readFile(pdfPath);
+     const pdfDoc = await PDFDocument.load(pdfBytes);
+ 
+     // Get the last page of the PDF
+     const lastPage = pdfDoc.getPages()[pdfDoc.getPages().length - 1];
+ 
+     const { width, height } = lastPage.getSize();
+ 
+     const { buffer, mimeType } = dataUrlToBuffer(imageDataUrl);
+     const image = await pdfDoc.embedPng(buffer);
+ 
+     // Set the desired width and height for the image
+     const desiredWidth = 490;
+     const desiredHeight = 130;
+ 
+     // Conditionally set x and y based on the value of iAm
+     let x, y;
+ 
+     console.log(globalIAm)
+ 
+     if (globalIAm === 'HCP') {
+       // Set coordinates for 'theHCP'
+       x = 55; // Adjust as needed
+       y = 350; // Adjust as needed
+     } else {
+       // Set default coordinates for other cases
+       x = 55; // Adjust as needed
+       y = 465; // Adjust as needed
+     }
+ 
+     console.log(`iAm: ${globalIAm}, x: ${x}, y: ${y}`); // Debugging statement
+ 
+     lastPage.drawImage(image, { x, y, width: desiredWidth, height: desiredHeight });
+ 
+     const modifiedPdfBytes = await pdfDoc.save();
+     await fs.writeFile(outputPdfPath, modifiedPdfBytes);
+   } catch (error) {
+     console.error('Error in addImageToPDF:', error);
+   }
+ };
+ 
 
 
 
