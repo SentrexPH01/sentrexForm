@@ -13,7 +13,8 @@ import dotenv from 'dotenv';
 dotenv.config()
 
 const app = express();
-// const port = 3001;
+// eslint-disable-next-line no-undef
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json())
@@ -418,6 +419,6 @@ app.post('/generate-pdf', async (req, res) => {
  export const handler = serverless(app);
 
 
-// app.listen(port, () => {
-//   console.log(`Server is running at http://localhost:${port}`);
-// });
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
+});

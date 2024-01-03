@@ -98,7 +98,7 @@ const YourComponent = () => {
   const [privateInsurance, setPrivateInsurance] = useState("");
   const [insurerGroupContractPlan, setInsurerGroupContractPlan] = useState("");
   const [insurerCertificate, setInsurerCertificate] = useState("");
-  const [verbalConsentObtained, setVerbalConsentObtained] = useState("");
+  // const [verbalConsentObtained, setVerbalConsentObtained] = useState("");
   const [vcbNameOfHcp, setVcbNameOfHcp] = useState("")
   const [acknowledgedcheckbox, setAcknowledgedcheckbox] = useState("")
   const [isLoading, setIsLoading] = useState(false);
