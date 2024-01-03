@@ -5,8 +5,8 @@ import cors from 'cors';
 import { PDFDocument } from 'pdf-lib';
 import fs from 'fs/promises';
 import sgMail from '@sendgrid/mail'
-import serverless from "serverless-http"
-import { createProxyMiddleware } from 'http-proxy-middleware';
+
+
 
 // Import and configure dotenv
 import dotenv from 'dotenv';
@@ -416,8 +416,6 @@ app.post('/generate-pdf', async (req, res) => {
    }
  };
  
- export const handler = serverless(app);
-
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);
