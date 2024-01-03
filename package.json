@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "npx nodemon src/server.js"
+    "start": "nodemon src/server.js"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
