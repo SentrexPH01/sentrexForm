@@ -19,7 +19,7 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json())
 
-app.use('/', express.static('/build'))
+app.get('/', express.static('/build'))
 
 // eslint-disable-next-line no-undef
 const sendGridApiKey = process.env.VITE_SENDGRID_API_KEY
