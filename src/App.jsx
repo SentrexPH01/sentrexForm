@@ -230,7 +230,7 @@ console.log("signatureDataUrl:", signatureDataUrl);
 
 
       // Log and send the input data to the server
-      const response = await fetch("http://localhost:3001/generate-pdf", {
+      const response = await fetch("/generate-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
