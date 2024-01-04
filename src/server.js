@@ -304,7 +304,7 @@ app.post('/generate-pdf', async (req, res) => {
  
 
    // Generates a PDF from the page content with margins
-   const pdfPath = 'patient-form-test.pdf';
+   const pdfPath = '/var/data/patient-form-test.pdf';
    await page.pdf({
      path: pdfPath,
      format: 'letter',
