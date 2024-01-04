@@ -1,12 +1,9 @@
-import { join } from 'path';
+const {join} = require('path');
 
 /**
  * @type {import("puppeteer").Configuration}
  */
-const puppeteerConfig = {
+module.exports = {
   // Changes the cache location for Puppeteer.
-  // eslint-disable-next-line no-undef
   cacheDirectory: join(__dirname, '.cache', 'puppeteer'),
 };
-
-export default puppeteerConfig;
