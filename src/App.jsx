@@ -194,37 +194,37 @@ const YourComponent = () => {
       .getTrimmedCanvas()
       .toDataURL("image/png");
        
-    // Do something with the signature data (e.g., send it to the server)
-    console.log(signatureDataUrl);
-    // return signatureDataUrl
+//     // Do something with the signature data (e.g., send it to the server)
+//     console.log(signatureDataUrl);
+//     // return signatureDataUrl
   
      
 
-    // Log and send the input data to the server
-// Log each piece of data on its own line
-console.log("Data to be sent to the server:");
-console.log("firstName:", firstName);
-console.log("lastName:", lastName);
-console.log("healthCardNumber:", healthCardNumber);
-console.log("dateOfBirth:", dateOfBirth);
-console.log("phoneNumber:", phoneNumber);
-console.log("bestTimeToCall:", bestTimeToCall);
-console.log("leaveAVoiceMail:", leaveAVoiceMail);
-console.log("address:", address);
-console.log("address2:", address2);
-console.log("city:", city);
-console.log("province:", province);
-console.log("postalCode:", postalCode);
-console.log("email:", email);
-console.log("doctor:", doctor);
-console.log("medication:", medication);
-console.log("privateInsurance:", privateInsurance);
-console.log("insurerGroupContractPlan:", insurerGroupContractPlan);
-console.log("insurerCertificate:", insurerCertificate);
-console.log("iAm:", iAm);
-console.log("acknowledgedcheckbox:", acknowledgedcheckbox);
-console.log("dateOfSignature:", dateOfSignature);
-console.log("signatureDataUrl:", signatureDataUrl);
+//     // Log and send the input data to the server
+// // Log each piece of data on its own line
+// console.log("Data to be sent to the server:");
+// console.log("firstName:", firstName);
+// console.log("lastName:", lastName);
+// console.log("healthCardNumber:", healthCardNumber);
+// console.log("dateOfBirth:", dateOfBirth);
+// console.log("phoneNumber:", phoneNumber);
+// console.log("bestTimeToCall:", bestTimeToCall);
+// console.log("leaveAVoiceMail:", leaveAVoiceMail);
+// console.log("address:", address);
+// console.log("address2:", address2);
+// console.log("city:", city);
+// console.log("province:", province);
+// console.log("postalCode:", postalCode);
+// console.log("email:", email);
+// console.log("doctor:", doctor);
+// console.log("medication:", medication);
+// console.log("privateInsurance:", privateInsurance);
+// console.log("insurerGroupContractPlan:", insurerGroupContractPlan);
+// console.log("insurerCertificate:", insurerCertificate);
+// console.log("iAm:", iAm);
+// console.log("acknowledgedcheckbox:", acknowledgedcheckbox);
+// console.log("dateOfSignature:", dateOfSignature);
+// console.log("signatureDataUrl:", signatureDataUrl);
 
 
 
