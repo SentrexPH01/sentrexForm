@@ -167,7 +167,7 @@ const YourComponent = () => {
       });
 
       if (response.ok) {
-        console.log("Data sent successfully!", iAm);
+        console.log("Data sent successfully!", iAm, doctor);
         // Handle success if needed
       } else {
         console.error("Failed to send data to the backend");
