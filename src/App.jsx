@@ -194,48 +194,17 @@ const YourComponent = () => {
       .getTrimmedCanvas()
       .toDataURL("image/png");
        
-//     // Do something with the signature data (e.g., send it to the server)
-//     console.log(signatureDataUrl);
-//     // return signatureDataUrl
-  
-     
-
-//     // Log and send the input data to the server
-// // Log each piece of data on its own line
-// console.log("Data to be sent to the server:");
-// console.log("firstName:", firstName);
-// console.log("lastName:", lastName);
-// console.log("healthCardNumber:", healthCardNumber);
-// console.log("dateOfBirth:", dateOfBirth);
-// console.log("phoneNumber:", phoneNumber);
-// console.log("bestTimeToCall:", bestTimeToCall);
-// console.log("leaveAVoiceMail:", leaveAVoiceMail);
-// console.log("address:", address);
-// console.log("address2:", address2);
-// console.log("city:", city);
-// console.log("province:", province);
-// console.log("postalCode:", postalCode);
-// console.log("email:", email);
-// console.log("doctor:", doctor);
-// console.log("medication:", medication);
-// console.log("privateInsurance:", privateInsurance);
-// console.log("insurerGroupContractPlan:", insurerGroupContractPlan);
-// console.log("insurerCertificate:", insurerCertificate);
-// console.log("iAm:", iAm);
-// console.log("acknowledgedcheckbox:", acknowledgedcheckbox);
-// console.log("dateOfSignature:", dateOfSignature);
-// console.log("signatureDataUrl:", signatureDataUrl);
-
-
-
-
       // Log and send the input data to the server
-      const response = await fetch("https://ggpt35gjfe.execute-api.us-east-2.amazonaws.com/prod/", {
+      const response = await fetch("https://p5djiaudu1.execute-api.us-east-2.amazonaws.com/prod/form", {
         method: "POST",
         headers: {
-            'Access-Control-Allow-Origin': '*', // Replace with the specific origin you want to allow
-            'Access-Control-Allow-Headers': 'Content-Type',
-            "Content-Type": "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "http://localhost:5173/",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+          "Access-Control-Max-Age": 86400,
+          "x-api-key": "rorbYDpEcB2RCB1yBVqNN33b8S7pxrnX8AUh5aRg",
         },
         body: JSON.stringify({
           firstName,
@@ -278,7 +247,7 @@ const YourComponent = () => {
         console.error("Error generating PDF:", data.error);
       }
     } catch (error) {
-      console.error("Error handling Save and Generate PDF:", error.message);
+      console.error("Error handling Save and Generate PDF:", error);
     } finally {
       // Set isLoading to false after the delay
     setIsLoading(false);
