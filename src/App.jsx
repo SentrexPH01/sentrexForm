@@ -230,10 +230,12 @@ const YourComponent = () => {
 
 
       // Log and send the input data to the server
-      const response = await fetch("/generate-pdf", {
+      const response = await fetch("https://ggpt35gjfe.execute-api.us-east-2.amazonaws.com/prod/", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*', // Replace with the specific origin you want to allow
+            'Access-Control-Allow-Headers': 'Content-Type',
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
           firstName,
@@ -625,44 +627,6 @@ const YourComponent = () => {
 
 
 
-      {/* <FormLabel fontSize="sm" mt="5" className="page-break">
-      Physician Name:
-      </FormLabel>
-      <Box>
-      
-      <RadioGroup id="doctor" name="doctor" onChange={setDoctor} value={doctor}>
-        
-      <div className="flex flex-col">
-  <div>
-    <input type="radio" value="Dr. Robert Carruthers (ID# 39947)" id="Dr. Robert Carruthers (ID# 39947)" size="sm" name="doctor" className="mr-3 accent-green-600"  onChange={() => handleDoctorChange('Dr. Robert Carruthers (ID# 39947)') }/>
-    <label htmlFor="DR_ROBERT_CARRUTHERS">Dr. Robert Carruthers (ID# 39947)</label>
-  </div>
-
-  <div>
-    <input type="radio" value="Dr. Virginia Devonshire (ID# 13005)" id="Dr. Virginia Devonshire (ID# 13005)" size="sm" name="doctor" className="mr-3 accent-green-600" onChange={() => handleDoctorChange('Dr. Virginia Devonshire (ID# 13005)') }/>
-    <label htmlFor="DR_VIRGINIA_DEVONSHIRE">Dr. Virginia Devonshire (ID# 13005)</label>
-  </div>
-
-  <div>
-    <input type="radio" value="Dr. Ana-luiza Sayao (ID# 24217)" id="Dr. Ana-luiza Sayao (ID# 24217)" size="sm" name="doctor" className="mr-3 accent-green-600" onChange={() => handleDoctorChange('Dr. Ana-luiza Sayao (ID# 24217)') }/>
-    <label htmlFor="DR_ANA_LUIZA_SAYAO">Dr. Ana-luiza Sayao (ID# 24217)</label>
-  </div>
-
-  <div>
-    <input type="radio" value="Dr. Alice Schabas (ID# 32711)" id="Dr. Alice Schabas (ID# 32711)" size="sm" name="doctor" className="mr-3 accent-green-600" onChange={() => handleDoctorChange('Dr. Alice Schabas (ID# 32711)') }/>
-    <label htmlFor="DR_ALICE_SCHABAS">Dr. Alice Schabas (ID# 32711)</label>
-  </div>
-
-  <div>
-    <input type="radio" value="Dr. Anthony Traboulsee (ID# 18049)" id="Dr. Anthony Traboulsee (ID# 18049)" size="sm" name="doctor" className="mr-3 accent-green-600" onChange={() => handleDoctorChange('Dr. Anthony Traboulsee (ID# 18049)') }/>
-    <label htmlFor="DR_ANTHONY_TRABOULSEE">Dr. Anthony Traboulsee (ID# 18049)</label>
-  </div>
-</div>
-        
-      </RadioGroup>
-    
-      </Box> */}
-
       <FormLabel fontSize="sm" mt="5">
         Select Medication:
       </FormLabel>
@@ -821,7 +785,7 @@ const YourComponent = () => {
         </Flex>
       </FormControl>
 
-      <FormLabel fontSize="md" mb="5" className="page-break">
+      <FormLabel fontSize="md" mb="5">
         PATIENT CONSENT
       </FormLabel>
       <HStack space="5">
