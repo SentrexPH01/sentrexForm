@@ -38,6 +38,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+// eslint-disable-next-line no-undef
+const awsApiKey = process.env.VITE_AWS_API_KEY
+
 const YourComponent = () => {
 
   
@@ -204,7 +207,7 @@ const YourComponent = () => {
           "Access-Control-Allow-Headers": "Content-Type, Authorization",
           "Access-Control-Allow-Credentials": true,
           "Access-Control-Max-Age": 86400,
-          "x-api-key": "rorbYDpEcB2RCB1yBVqNN33b8S7pxrnX8AUh5aRg",
+          "x-api-key": awsApiKey,
         },
         body: JSON.stringify({
           firstName,
