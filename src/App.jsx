@@ -201,13 +201,10 @@ const YourComponent = () => {
       const response = await fetch("https://p5djiaudu1.execute-api.us-east-2.amazonaws.com/prod/form", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:5173/",
+          "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-          "Access-Control-Max-Age": 86400,
-          "x-api-key": awsApiKey,
+          "Access-Control-Allow-Headers": "Content-Type",
+          "X-API-Key": awsApiKey,
         },
         body: JSON.stringify({
           firstName,
