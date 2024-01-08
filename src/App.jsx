@@ -190,7 +190,7 @@ const YourComponent = () => {
   };
 
 
-  // TEST CODE HERE
+  // MAIN CODE
 
   const submitFormAndEmail = async () => {
     try {
@@ -210,7 +210,7 @@ const YourComponent = () => {
       const response = await fetch("https://i790x6ab9l.execute-api.us-east-2.amazonaws.com/prod/form", {
         method: "POST",
         headers: {
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://vch-patient-form.onrender.com",
           "Access-Control-Allow-Methods": "OPTIONS, POST, PUT",
           "Access-Control-Allow-Headers": "Content-Type",
           "X-API-Key": awsApiKey,
