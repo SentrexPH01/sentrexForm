@@ -211,7 +211,7 @@ const YourComponent = () => {
         method: "POST",
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, PUT",
           "Access-Control-Allow-Headers": "Content-Type",
           "X-API-Key": awsApiKey,
         },
