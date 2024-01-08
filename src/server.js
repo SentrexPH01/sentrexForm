@@ -31,31 +31,31 @@ sgMail.setApiKey(sendGridApiKey);
 
 
 
-// Function to send email with only JSON data
-const sendEmailWithJsonData = async (recipientEmail, jsonData) => {
-  try {
-    const senderEmail = 'itautomation@sentrex.com';
+// // Function to send email with only JSON data
+// const sendEmailWithJsonData = async (recipientEmail, jsonData) => {
+//   try {
+//     const senderEmail = 'itautomation@sentrex.com';
 
-    const msg = {
-      to: recipientEmail,
-      from: senderEmail,
-      subject: 'New Form Submission',
-      text: JSON.stringify(jsonData, null, 2),
-    };
+//     const msg = {
+//       to: recipientEmail,
+//       from: senderEmail,
+//       subject: 'New Form Submission',
+//       text: JSON.stringify(jsonData, null, 2),
+//     };
 
-    await sgMail.send(msg)
+//     await sgMail.send(msg)
 
-    console.log('Email with JSON data sent successfully!');
-  } catch (error) {
-    console.error('Error sending email with JSON data:', error);
+//     console.log('Email with JSON data sent successfully!');
+//   } catch (error) {
+//     console.error('Error sending email with JSON data:', error);
 
-    // Log additional details about the error
-    console.error('SendGrid response:', error.response);
-    console.error('SendGrid request payload:', error.request);
+//     // Log additional details about the error
+//     console.error('SendGrid response:', error.response);
+//     console.error('SendGrid request payload:', error.request);
 
-    throw new Error('Error sending email with JSON data');
-  }
-};
+//     throw new Error('Error sending email with JSON data');
+//   }
+// };
 
 
 // Function to convert a data URL to a buffer
@@ -143,36 +143,37 @@ app.post('/generate-pdf', async (req, res) => {
 
 
   
-    // Call the function to send an email with JSON data to paulh@sentrex.com
-    await sendEmailWithJsonData('paulh@sentrex.com', {
-      firstName,
-      lastName,
-      healthCardNumber,
-      bestTimeToCall,
-      leaveAVoiceMail,
-      address,
-      address2,
-      city,
-      province,
-      postalCode,
-      email,
-      doctor,
-      medication,
-      privateInsurance,
-      insurerGroupContractPlan,
-      insurerCertificate,
-      iAm,
-      dateOfBirth,
-      phoneNumber,
-      acknowledgedcheckbox,
-      // dateOfSignature,
+    // // Call the function to send an email with JSON data to paulh@sentrex.com
+    // await sendEmailWithJsonData('paulh@sentrex.com', {
+    //   firstName,
+    //   lastName,
+    //   healthCardNumber,
+    //   bestTimeToCall,
+    //   leaveAVoiceMail,
+    //   address,
+    //   address2,
+    //   city,
+    //   province,
+    //   postalCode,
+    //   email,
+    //   doctor,
+    //   medication,
+    //   privateInsurance,
+    //   insurerGroupContractPlan,
+    //   insurerCertificate,
+    //   iAm,
+    //   dateOfBirth,
+    //   phoneNumber,
+    //   acknowledgedcheckbox,
+    //   signatureDataUrl,
+    //   // dateOfSignature,
       
-      currentDate,
-      vcbFrom,
-      nameOfSdmPrinted,
-      relationshipOfSdmToPatient,
-      vcbNameOfHcp,
-    });
+    //   currentDate,
+    //   vcbFrom,
+    //   nameOfSdmPrinted,
+    //   relationshipOfSdmToPatient,
+    //   vcbNameOfHcp,
+    // });
 
     console.log('Received data on server:', { 
 

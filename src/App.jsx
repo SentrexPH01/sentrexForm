@@ -74,6 +74,18 @@ const YourComponent = () => {
   const endOfForm = useRef(null);
   const sigCanvas = useRef(null);
 
+  // const handleSignatureFinish = () => {
+  //   const canvas = sigCanvas.current;
+  //   const boundingBox = canvas.getBoundingClientRect();
+
+  //   // Use boundingBox.left and boundingBox.top as x and y coordinates
+  //   const canvasX = boundingBox.left;
+  //   const canvasY = boundingBox.top;
+
+  //   // Print or use the x and y values as needed
+  //   console.log('Signature position: ', canvasX, canvasY);
+  // };
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [healthCardNumber, setHealthCardNumber] = useState("");
@@ -114,14 +126,11 @@ const YourComponent = () => {
 
   const handleRadioChange = (value) => {
     setLeaveAVoiceMail(value);
-    
   };
 
   const handleVcbFrom = (value) => {
     setVcbFrom(value);
   }
-
-
 
   const handleCheckboxChange2 = (value) => {
     // Update the state of bestTimeToCall based on the checkbox changes
@@ -134,8 +143,6 @@ const YourComponent = () => {
         return [...prev, value];
       }
     });
-    // You can choose to call sendDataToBackend here if needed
-    // sendDataToBackend();
   };
 
   const handleCheckboxChange = () => {
@@ -180,36 +187,34 @@ const YourComponent = () => {
   };
 
 
-  // MAIN CODE
-  const handleSaveAndGeneratePDF = async () => {
-     
+  // TEST CODE HERE
+
+  const submitFormAndEmail = async () => {
     try {
-     // Set isLoading to true
-     setIsLoading(true);
+      // Set isLoading to true
+      setIsLoading(true);
 
-    
+      setTimeout(() => {
+        setIsLoading(false);
+        setIsModalOpen(true); //
+        }, 5000);
 
-
-      const signatureDataUrl = sigCanvas.current
-      .getTrimmedCanvas()
-      .toDataURL("image/png");
-       
+        const signatureDataUrl = sigCanvas.current
+          .getTrimmedCanvas()
+          .toDataURL("image/png");
+  
       // Log and send the input data to the server
-      const response = await fetch("https://p5djiaudu1.execute-api.us-east-2.amazonaws.com/prod/form", {
+      const response = await fetch("https://i790x6ab9l.execute-api.us-east-2.amazonaws.com/prod/form", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://localhost:5173/",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-          "Access-Control-Max-Age": 86400,
           "x-api-key": "rorbYDpEcB2RCB1yBVqNN33b8S7pxrnX8AUh5aRg",
         },
         body: JSON.stringify({
           firstName,
           lastName,
           healthCardNumber,
+          gender,
           dateOfBirth,
           phoneNumber,
           bestTimeToCall,
@@ -227,32 +232,28 @@ const YourComponent = () => {
           insurerCertificate,
           iAm,
           acknowledgedcheckbox,
-          
           signatureDataUrl,
           vcbFrom,
           nameOfSdmPrinted,
           relationshipOfSdmToPatient,
           vcbNameOfHcp,
-          
+
         }),
       });
-      
-      // Show the modal
-      setIsModalOpen(true);
+ 
       // Handle the server response
       if (response.ok) {
-        console.log("PDF generation successfully initiated!");
+        console.log("PDF emailed successfully!");
       } else {
         const data = await response.json();
         console.error("Error generating PDF:", data.error);
       }
     } catch (error) {
-      console.error("Error handling Save and Generate PDF:", error);
-    } finally {
-      // Set isLoading to false after the delay
-    setIsLoading(false);
-    }
+      console.error("API Error:", error);
+    }        // Set isLoading to false after the delay
+    
   };
+  
   
   const closeModal = () => {
     setIsModalOpen(false);
@@ -730,30 +731,7 @@ const YourComponent = () => {
       </Form>
       
       </Formik>
-      <FormControl isRequired>
-        <Flex>
-          {/* <Box className="my-5">
-            <Checkbox
-              
-              id="acknowledgedcheckbox"
-              colorScheme="green"
-              className="border-red-500"
-              isChecked={acknowledgedcheckbox}
-              onChange={handleCheckboxChange}
-            >
-              <Center>
-                <Box>
-                  <FormLabel fontSize="sm" className="pt-2">
-                    {" "}
-                    I acknowledge, understand, and agree to the above
-                  </FormLabel>
-                </Box>
-              </Center>
-            </Checkbox>
-          </Box> */}
-        </Flex>
-      </FormControl>
-
+ 
       <FormLabel fontSize="md" mb="5">
         PATIENT CONSENT
       </FormLabel>
@@ -815,6 +793,7 @@ const YourComponent = () => {
               ref={sigCanvas}
               id="signatureCanvas"
               canvasProps={{ width: 700, height: 200, className: "sigCanvas" }}
+              // onEnd={handleSignatureFinish}
             />
           </Box>
          
@@ -848,7 +827,7 @@ const YourComponent = () => {
               </Flex>
             </Formik>
   
-            <Button colorScheme="teal" onClick={handleSaveAndGeneratePDF}  isLoading={isLoading} className="generate-pdf">
+            <Button colorScheme="teal" onClick={submitFormAndEmail}  isLoading={isLoading} className="generate-pdf">
               Generate PDF
             </Button>
             {/* Modal for showing the success message */}
@@ -964,7 +943,7 @@ const YourComponent = () => {
             {/* <Button colorScheme="blue" onClick={handleSave}>
               Save Signature
             </Button> */}
-            <Button colorScheme="teal" onClick={handleSaveAndGeneratePDF}  isLoading={isLoading} className="generate-pdf">
+            <Button colorScheme="teal" onClick={submitFormAndEmail}  isLoading={isLoading} className="generate-pdf">
               Submit Form
             </Button>
             {/* Modal for showing the success message */}
@@ -1120,7 +1099,7 @@ const YourComponent = () => {
             {/* <Button colorScheme="blue" onClick={handleSave}>
               Save Signature
             </Button> */}
-            <Button colorScheme="teal" onClick={handleSaveAndGeneratePDF}  isLoading={isLoading} className="generate-pdf" >
+            <Button colorScheme="teal" onClick={submitFormAndEmail}  isLoading={isLoading} className="generate-pdf" >
               Submit Form
             </Button>
             {/* Modal for showing the success message */}
