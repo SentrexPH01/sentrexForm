@@ -213,7 +213,6 @@ const YourComponent = () => {
           "Access-Control-Allow-Origin": "https://vch-patient-form.onrender.com",
           "Access-Control-Allow-Methods": "OPTIONS, POST, PUT",
           "Access-Control-Allow-Headers": "Content-Type",
-          "X-API-Key": awsApiKey,
         },
         body: JSON.stringify({
           firstName,
