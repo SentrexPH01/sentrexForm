@@ -38,6 +38,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+// eslint-disable-next-line no-undef
+const awsApiKey = process.env.VITE_AWS_API_KEY
+
 const YourComponent = () => {
 
   
@@ -207,8 +210,10 @@ const YourComponent = () => {
       const response = await fetch("https://i790x6ab9l.execute-api.us-east-2.amazonaws.com/prod/form", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": "rorbYDpEcB2RCB1yBVqNN33b8S7pxrnX8AUh5aRg",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "X-API-Key": awsApiKey,
         },
         body: JSON.stringify({
           firstName,
