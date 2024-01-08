@@ -39,7 +39,7 @@ import {
 } from "@chakra-ui/react";
 
 // eslint-disable-next-line no-undef
-const awsApiKey = process.env.VITE_AWS_API_KEY
+// const awsApiKey = process.env.VITE_AWS_API_KEY
 
 const YourComponent = () => {
 
@@ -208,9 +208,9 @@ const YourComponent = () => {
   
       // Log and send the input data to the server
       const response = await fetch("https://i790x6ab9l.execute-api.us-east-2.amazonaws.com/prod/form", {
-        method: "POST",
+        method: "PUT",
         headers: {
-          "Access-Control-Allow-Origin": "https://vch-patient-form.onrender.com",
+          "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "OPTIONS, POST, PUT",
           "Access-Control-Allow-Headers": "Content-Type",
         },
