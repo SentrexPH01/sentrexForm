@@ -210,9 +210,7 @@ const YourComponent = () => {
       const response = await fetch("https://ri36vufe0e.execute-api.us-east-2.amazonaws.com/prod/form", {
         method: "POST",
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, PUT",
-          "Access-Control-Allow-Headers": "Content-Type",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           firstName,
