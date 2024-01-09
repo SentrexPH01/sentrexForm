@@ -195,21 +195,18 @@ const YourComponent = () => {
 
   const submitFormAndEmail = async () => {
     try {
+      // Perform form validation
+      if (!firstName || !lastName || !email || !healthCardNumber || !gender || !address || !city || !province || !postalCode) {
+        // Display toast notification for empty fields
+        toast({
+          title: 'Empty Fields',
+          description: 'Please fill in all required fields.',
+          status: 'warning',
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
 
-     // Perform form validation
-    if (!firstName || !lastName || !email || !healthCardNumber || !gender || !address || !city || !province || !postalCode) {
-      // Display toast notification for empty fields
-      toast({
-        title: 'Empty Fields',
-        description: 'Please fill in all required fields.',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    // Continue with form submission logic
     console.log('Form submitted:', { firstName, lastName, email });
   
       // Set isLoading to true
@@ -261,18 +258,22 @@ const YourComponent = () => {
         }),
       });
  
-      // Handle the server response
-      if (response.ok) {
+       // Handle the server response
+       if (response.ok) {
         console.log("PDF emailed successfully!");
       } else {
         const data = await response.json();
         console.error("Error generating PDF:", data.error);
       }
-    } catch (error) {
-      console.error("API Error:", error);
-    }        // Set isLoading to false after the delay
-    
-  };
+
+      // Set isLoading to false after the delay
+      setIsLoading(false);
+      setIsModalOpen(true);
+    }
+  } catch (error) {
+    console.error("API Error:", error);
+  }
+};
   
   
   const closeModal = () => {
