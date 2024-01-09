@@ -4,7 +4,7 @@ import cors from 'cors';
 
 const app = express();
 // eslint-disable-next-line no-undef
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3100;
 
 app.use(cors());
 app.use(express.json())
