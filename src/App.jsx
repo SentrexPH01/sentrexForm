@@ -36,6 +36,7 @@ import {
   Spacer,
   Stack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 
 // eslint-disable-next-line no-undef
@@ -125,7 +126,7 @@ const YourComponent = () => {
 
   const formRef = useRef(null);
 
-
+  const toast = useToast();
 
   const handleRadioChange = (value) => {
     setLeaveAVoiceMail(value);
@@ -166,34 +167,51 @@ const YourComponent = () => {
     setPhoneNumber(e.target.value);
   };
 
-  const sendDataToBackend = async () => {
-    try {
-      const response = await fetch("/send-iam-data", {
-        method: "POST", // Adjust the method based on your backend requirements
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ iAm, doctor }),
-      });
+  // const sendDataToBackend = async () => {
+  //   try {
+  //     const response = await fetch("/send-iam-data", {
+  //       method: "POST", // Adjust the method based on your backend requirements
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ iAm, doctor }),
+  //     });
 
-      if (response.ok) {
-        console.log("Data sent successfully!", iAm, doctor);
-        // Handle success if needed
-      } else {
-        console.error("Failed to send data to the backend");
-        // Handle error if needed
-      }
-    } catch (error) {
-      console.error("Error sending data to the backend:", error);
-      // Handle error if needed
-    }
-  };
+  //     if (response.ok) {
+  //       console.log("Data sent successfully!", iAm, doctor);
+  //       // Handle success if needed
+  //     } else {
+  //       console.error("Failed to send data to the backend");
+  //       // Handle error if needed
+  //     }
+  //   } catch (error) {
+  //     console.error("Error sending data to the backend:", error);
+  //     // Handle error if needed
+  //   }
+  // };
 
 
   // MAIN CODE
 
   const submitFormAndEmail = async () => {
     try {
+
+     // Perform form validation
+    if (!firstName || !lastName || !email || !healthCardNumber || !gender || !address || !city || !province || !postalCode) {
+      // Display toast notification for empty fields
+      toast({
+        title: 'Empty Fields',
+        description: 'Please fill in all required fields.',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // Continue with form submission logic
+    console.log('Form submitted:', { firstName, lastName, email });
+  
       // Set isLoading to true
       setIsLoading(true);
 
@@ -320,6 +338,7 @@ const YourComponent = () => {
                 id="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
+                
               />
      
 
@@ -757,7 +776,7 @@ const YourComponent = () => {
             handleShowHide(e);
             }}
             onClick={() => {
-              sendDataToBackend();
+              // sendDataToBackend();
               endOfForm.current?.scrollIntoView({ behavior: "smooth" });
             }}
           >
@@ -830,7 +849,7 @@ const YourComponent = () => {
             </Formik>
   
             <Button colorScheme="teal" onClick={submitFormAndEmail}  isLoading={isLoading} className="generate-pdf">
-              Generate PDF
+              Submit Form
             </Button>
             {/* Modal for showing the success message */}
       <Modal isOpen={isModalOpen} onClose={closeModal}>
