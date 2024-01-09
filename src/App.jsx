@@ -207,8 +207,8 @@ const YourComponent = () => {
           .toDataURL("image/png");
   
       // Log and send the input data to the server
-      const response = await fetch("https://i790x6ab9l.execute-api.us-east-2.amazonaws.com/prod/form", {
-        method: "PUT",
+      const response = await fetch("https://ri36vufe0e.execute-api.us-east-2.amazonaws.com/prod/form", {
+        method: "POST",
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "OPTIONS, POST, PUT",
